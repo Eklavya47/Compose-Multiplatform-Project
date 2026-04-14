@@ -1,0 +1,3 @@
+package com.betanooblabs.composemultiplatformproject.dependencies
+
+actual class DBclient

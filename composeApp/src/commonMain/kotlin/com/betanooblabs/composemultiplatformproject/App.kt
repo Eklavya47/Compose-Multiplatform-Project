@@ -3,6 +3,7 @@ package com.betanooblabs.composemultiplatformproject
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,16 +15,46 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.betanooblabs.composemultiplatformproject.dependencies.MyViewModel
 import org.jetbrains.compose.resources.painterResource
 
 import composemultiplatformproject.composeapp.generated.resources.Res
 import composemultiplatformproject.composeapp.generated.resources.compose_multiplatform
+import org.koin.compose.KoinContext
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
+        KoinContext {
+            NavHost(
+                navController = rememberNavController(),
+                startDestination = "home"
+            ){
+                composable(route = "home"){
+                    val viewModel = koinViewModel<MyViewModel>()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Text(
+                            text = viewModel.getHelloWorldString(),
+                        )
+                    }
+                }
+            }
+        }
+
+        /*var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -44,6 +75,6 @@ fun App() {
                     Text("Compose: $greeting")
                 }
             }
-        }
+        }*/
     }
 }
